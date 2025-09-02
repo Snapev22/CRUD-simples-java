@@ -1,6 +1,7 @@
 package Dominio;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -8,7 +9,8 @@ import javax.swing.JOptionPane;
 public class GerenciadorDePessoas {
 	
 	
-	 ArrayList<Pessoa> agenda = new ArrayList<Pessoa>();
+	private List<Pessoa> agenda = new ArrayList<Pessoa>();
+	 
 	
 	public void cadastraPessoa(Pessoa novaPessoa) {
 		this.agenda.add(novaPessoa);
@@ -20,7 +22,7 @@ public class GerenciadorDePessoas {
 	}
 	
 	// método de busca dentro do array recebe idade como parâmetro de busca.
-	public List<Pessoa> pesquisaPorIDde(int idade) {
+	public List<Pessoa> pesquisaPorIdade(int idade) {
 
 		List<Pessoa>pEncontradas = new ArrayList<Pessoa>();
 		
@@ -35,36 +37,19 @@ public class GerenciadorDePessoas {
 		return pEncontradas; 
 	}
 	
-	// Usa bubble sort pra ordernar objetos alfabeticamente
-	public void cadastrosEmOrdemAlfabetica() {
+	// Ordenando o array com parametro String nome
+	public StringBuilder cadastrosEmOrdemAlfabetica() {
 		
-		if(isVazia()) {
-			JOptionPane.showMessageDialog(null, "Erro: agenda vazia");
-			return;
-		}
+		Collections.sort(agenda);
 		
-		
-		for(int i = 0;i < agenda.size() - 1;i++) {
-			for(int j = 0;j < agenda.size()-1 - i;j++) {
-				Pessoa pessoaAtual = agenda.get(j);
-				Pessoa proximo = agenda.get(j + 1);
-				
-				if(pessoaAtual.getNome().compareTo(proximo.getNome()) > 0) {
-					agenda.set(j, proximo);
-					agenda.set(j + 1 , pessoaAtual);
-				}
-			}
-		}
 		StringBuilder resultado = new StringBuilder("---Lista de pessoas ordenadas----\n");
 		for(Pessoa pessoa: agenda) {
 			resultado.append(pessoa).append("\n");
 		}	
-		JOptionPane.showMessageDialog(null, resultado.toString());
+		return  resultado;
 	}
-
-	/*metodo de busca de pessoas na agenda com base na comparação da  String nome, 
-	 * retorna um objeto de pessoa se encontrar senão retorna null;
-	 */
+	
+	//metodo de busca de pessoas na agenda com base na comparação da  String nome 
 	public Pessoa buscaPorNome(String nome) {
 		
 		if(agenda.isEmpty()) {
