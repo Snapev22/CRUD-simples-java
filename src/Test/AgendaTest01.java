@@ -80,11 +80,13 @@ public class AgendaTest01 {
 					JOptionPane.showMessageDialog(null, "Nenhuma pessoa encontrada com essa idade");
 					break;
 				} else {
-					StringBuilder resultado = new StringBuilder();
-					for (Pessoa p : encontrados) {
-						resultado.append(p).append("\n");
-					}
-					JOptionPane.showMessageDialog(null, resultado.toString());
+                    cadastro.MostrarPorPagina(encontrados, 3);
+
+					//StringBuilder resultado = new StringBuilder();
+					//for (Pessoa p : encontrados) {
+					//	resultado.append(p).append("\n");
+					//}
+					//JOptionPane.showMessageDialog(null, resultado.toString());
 				}
 				break;
 			
@@ -94,11 +96,11 @@ public class AgendaTest01 {
 					JOptionPane.showMessageDialog(null, "Erro: agenda vazia");
 					break;
 				}
-				JOptionPane.showMessageDialog(null, cadastro.cadastrosEmOrdemAlfabetica());
+                cadastro.MostrarPorPagina(cadastro.cadastrosEmOrdemAlfabetica(), 3);
 				break;
-			
+
 			case 4:
-				
+
 				if (cadastro.isVazia()) {
 					JOptionPane.showMessageDialog(null, "Erro: agenda vazia");
 					break;
