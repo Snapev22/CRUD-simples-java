@@ -62,11 +62,14 @@ public class AgendaTest01 {
 					JOptionPane.showMessageDialog(null, "Nenhuma pessoa encontrada com essa idade");
 					break;
 				}else {
-					StringBuilder resultado = new StringBuilder();
-					for(Pessoa p : encontrados) {
-						resultado.append(p).append("\n");
-					}
-					JOptionPane.showMessageDialog(null, resultado.toString());
+
+                    cadastro.MostrarPorPagina(encontrados, 3);
+
+					//StringBuilder resultado = new StringBuilder();
+					//for(Pessoa p : encontrados) {
+					//	resultado.append(p).append("\n");
+					//}
+					//JOptionPane.showMessageDialog(null, resultado.toString());
 				}
 				break;
 			
