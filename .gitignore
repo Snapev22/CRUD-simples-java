@@ -1,1 +1,7 @@
-bin/ .classpath .project .settings/ *.class
+.idea/
+out/
+bin/ 
+.classpath 
+.project 
+.settings/ 
+*.class
