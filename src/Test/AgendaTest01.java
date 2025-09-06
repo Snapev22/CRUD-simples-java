@@ -66,6 +66,9 @@ public class AgendaTest01 {
 			
 			case 2:
 				
+			try {
+				
+			 
 				if (cadastro.isVazia()) {
 					JOptionPane.showMessageDialog(null, "Erro: agenda vazia");
 					break;
@@ -80,23 +83,21 @@ public class AgendaTest01 {
 					JOptionPane.showMessageDialog(null, "Nenhuma pessoa encontrada com essa idade");
 					break;
 				} else {
-                    cadastro.MostrarPorPagina(encontrados, 3);
-
-					//StringBuilder resultado = new StringBuilder();
-					//for (Pessoa p : encontrados) {
-					//	resultado.append(p).append("\n");
-					//}
-					//JOptionPane.showMessageDialog(null, resultado.toString());
+                    cadastro.mostrarPorPagina(encontrados, 3);
+                    
+				}
+			}catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Erro: Idade só pode ser um número inteiro.");
 				}
 				break;
 			
-				//exibir Array agenda.
+				//exibir lista agenda.
 			case 3:
 				if(cadastro.isVazia()) {
 					JOptionPane.showMessageDialog(null, "Erro: agenda vazia");
 					break;
 				}
-                cadastro.MostrarPorPagina(cadastro.cadastrosEmOrdemAlfabetica(), 3);
+                cadastro.mostrarPorPagina(cadastro.cadastrosEmOrdemAlfabetica(), 3);
 				break;
 
 			case 4:
