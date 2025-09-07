@@ -2,16 +2,21 @@ package Dominio;
 
 public class Pessoa implements Comparable<Pessoa> {
 
+	private static int proximoId = 1;
+	private int id;
 	private String nome;
 	private String endereco;
 	private String telefone;
 	private int idade;
 
 	public Pessoa() {
-
+		
+		this.id = proximoId;
+		proximoId++;
 	}
 
 	public Pessoa(String nome, String endereco, String telefone, int idade) {
+		this();
 		setNome(nome);
 		setEndereco(endereco);
 		setTelefone(telefone);
@@ -24,6 +29,10 @@ public class Pessoa implements Comparable<Pessoa> {
 		return this.nome.compareTo(proxima.getNome());
 	}
 
+	public int getId() {
+		return id;
+	}
+	
 	public String getNome() {
 		return nome;
 	}
@@ -67,7 +76,7 @@ public class Pessoa implements Comparable<Pessoa> {
 
 		this.telefone = telefone.trim();
 	}
-
+	
 	public int getIdade() {
 		return idade;
 	}
@@ -82,7 +91,8 @@ public class Pessoa implements Comparable<Pessoa> {
 	@Override
 	public String toString() {
 		
-		return  "Nome: " + this.nome 
+		return  "ID: " + this.id + 
+				"\nNome: " + this.nome 
 				+"\nIdade: " + this.idade
 				+"\nTelefone: " + this.telefone
 				+"\nEnderço: "  + this.endereco + "\n";

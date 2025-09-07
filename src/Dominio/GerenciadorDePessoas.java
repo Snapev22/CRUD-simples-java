@@ -13,12 +13,50 @@ public class GerenciadorDePessoas {
 	 
 	public void cadastraPessoa(Pessoa novaPessoa) {
 		this.agenda.add(novaPessoa);
-		JOptionPane.showMessageDialog(null, "Pessoa cadastrada com sucesso.");
+		JOptionPane.showMessageDialog(null, "Pessoa cadastrada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void removerCadastro(int id) {
+		
+		Pessoa pessoaRemover = null;
+		for(Pessoa pessoa : agenda) {
+			if(pessoa.getId() == id) {
+				pessoaRemover = pessoa;
+				break;
+			}
+		}
+		
+		if(pessoaRemover == null) {
+			JOptionPane.showMessageDialog(null, "Pessoa com ID: " + id + " não encontrada.", "Erro", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
+		String mensagem = "Deseja remover a seguinte pessoa?\n\n" 
+							+"ID: " + pessoaRemover.getId() + "\n"
+							+"Nome: " + pessoaRemover.getNome() + "\n" 
+							+"Endereço: " + pessoaRemover.getEndereco() + "\n"
+							+"Idade : " + pessoaRemover.getIdade();
+	
+		int confirmacao = JOptionPane.showConfirmDialog(
+				null, 
+				mensagem,
+				"Confirmação de remoção",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.WARNING_MESSAGE);
+		
+		if(confirmacao == JOptionPane.YES_OPTION) {
+			agenda.remove(pessoaRemover);
+			JOptionPane.showMessageDialog(null, "Pessoa removida com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+		}else {
+			JOptionPane.showMessageDialog(null, "Operação cancelada.");
+		}
+	
 	}
 	
 	public boolean isVazia() {
 		return agenda.isEmpty();
 	}
+	
 	
 	public List<Pessoa> pesquisaPorIdade(int idade) {
 
@@ -43,13 +81,13 @@ public class GerenciadorDePessoas {
 		return  agenda;
 	}
 	
-	public Pessoa buscaPorNome(String nome) {
+	public Pessoa buscaPorID(int id) {
 		
 		if(agenda.isEmpty()) {
 			return null;
 		}
 		for (Pessoa p : agenda) {
-			if (p.getNome().trim().equalsIgnoreCase(nome.trim())) {
+			if (p.getId() == id) {
 				return p;
 			}
 		}
