@@ -1,13 +1,12 @@
 package Test;
 
-import Dominio.Pessoa;
 import Exceptions.RegraDeNegocioExecpetion;
+import Service.PessoaService;
+import entities.Pessoa;
 
 import java.util.List;
 
 import javax.swing.JOptionPane;
-
-import Dominio.GerenciadorDePessoas;
 /**
  * Classe responsável pela entrada e saída de dados
  * 
@@ -15,7 +14,7 @@ import Dominio.GerenciadorDePessoas;
  */
 public class AgendaTest01 {
 	
-	private static final GerenciadorDePessoas cadastro = new GerenciadorDePessoas();
+	private static final PessoaService cadastro = new PessoaService();
 	
 	public static void main(String[] args) {
 		
@@ -224,10 +223,7 @@ public class AgendaTest01 {
 		try {
 			int idBusca = Integer.parseInt(idBuscaStr);
 			Pessoa pessoaAlterar = cadastro.buscaPorID(idBusca);
-			if (pessoaAlterar == null) {
-				JOptionPane.showMessageDialog(null, "Erro: Pessoa não encontrada com o ID" + idBusca + ".", "Erro",
-						JOptionPane.ERROR_MESSAGE);
-			}	
+			
 			int confirmar = JOptionPane.showConfirmDialog(null,
 					"Pessoa encontrada. Deseja alterar cadastro?\n\n" + pessoaAlterar.toString(),
 					"Confirmarção de Alteração", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -267,12 +263,6 @@ public class AgendaTest01 {
 		try {
 			int id = Integer.parseInt(idStr);
 			pessoaRemover = cadastro.buscaPorID(id);
-
-			if (pessoaRemover == null) {
-				JOptionPane.showMessageDialog(null, "Pessoa com ID: " + id + " não encontrada.", "Erro",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
 
 			String mensagem = "Deseja remover a seguinte pessoa?\n\n" + "ID: " + pessoaRemover.getId() + "\n" + "Nome: "
 					+ pessoaRemover.getNome() + "\n" + "Endereço: " + pessoaRemover.getEndereco() + "\n" + "Idade : "
