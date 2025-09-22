@@ -1,6 +1,6 @@
 package entities;
 
-import Exceptions.RegraDeNegocioExecpetion;
+import exceptions.RegraDeNegocioExcepetion;
 
 /**
  * Classe responsável por representar uma pessoa a ser cadastrada.
@@ -8,27 +8,23 @@ import Exceptions.RegraDeNegocioExecpetion;
  */
 public class Pessoa implements Comparable<Pessoa> {
 
-	private static int proximoId = 1;
 	private int id;
 	private String nome;
 	private String endereco;
 	private String telefone;
 	private int idade;
 
-	public Pessoa() {
-		
-		this.id = proximoId;
-		proximoId++;
-	}
 
 	public Pessoa(String nome, String endereco, String telefone, int idade) {
-		this();
 		setNome(nome);
 		setEndereco(endereco);
 		setTelefone(telefone);
 		setIdade(idade);
 	}
-
+	public Pessoa(int id, String nome, String endereco, String telefone, int idade) {
+		this(nome, endereco, telefone, idade);
+		this.id = id;
+	}
 	/**
 	 * Compara pessoas 	para ordennação.
 	 * <p>
@@ -59,10 +55,10 @@ public class Pessoa implements Comparable<Pessoa> {
 
 	public void setNome(String nome) {
 		if (nome == null || nome.trim().isEmpty()) {
-			throw new RegraDeNegocioExecpetion("Campo nome não pode ser vázio.");
+			throw new RegraDeNegocioExcepetion("Campo nome não pode ser vázio.");
 		}
 		if (!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ\\s]+$")) {
-			throw new RegraDeNegocioExecpetion("Nome digitado não é valido.");
+			throw new RegraDeNegocioExcepetion("Nome digitado não é valido.");
 		}
 		this.nome = nome.trim();
 	}
@@ -77,10 +73,10 @@ public class Pessoa implements Comparable<Pessoa> {
 	 */
 	public void setEndereco(String endereco) {
 		if (endereco == null || endereco.trim().isBlank()) {
-			throw new RegraDeNegocioExecpetion("Campo endereço não pode ser vazio.");
+			throw new RegraDeNegocioExcepetion("Campo endereço não pode ser vazio.");
 		}
 		if (!endereco.matches("^[A-Za-zÀ-ÖØ-öø-ÿ0-9,\\-\\s]+$")) {
-			throw new RegraDeNegocioExecpetion("Campo endereço foi digitado com caracteres inválidos.");
+			throw new RegraDeNegocioExcepetion("Campo endereço foi digitado com caracteres inválidos.");
 		}
 		this.endereco = endereco.trim();
 	}
@@ -95,11 +91,11 @@ public class Pessoa implements Comparable<Pessoa> {
 	 */
 	public void setTelefone(String telefone) {
 		if (telefone == null || telefone.trim().isEmpty()) {
-			throw new RegraDeNegocioExecpetion("Campo telefone não pode ser vazio.");
+			throw new RegraDeNegocioExcepetion("Campo telefone não pode ser vazio.");
 		}
 
 		if (!telefone.matches("^[0-9()+\\-\\s]+$")) {
-			throw new RegraDeNegocioExecpetion("Telefone inválido.");
+			throw new RegraDeNegocioExcepetion("Telefone inválido.");
 		}
 
 		this.telefone = telefone.trim();
@@ -115,7 +111,7 @@ public class Pessoa implements Comparable<Pessoa> {
 	 */
 	public void setIdade(int idade) {
 		if (idade <= 0) {
-			throw new RegraDeNegocioExecpetion("Idade só pode ser um inteiro positivo");
+			throw new RegraDeNegocioExcepetion("Idade só pode ser um inteiro positivo");
 		}
 		this.idade = idade;
 	}

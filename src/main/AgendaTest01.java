@@ -1,8 +1,8 @@
 package main;
 
-import Exceptions.RegraDeNegocioExecpetion;
-import Service.PessoaService;
 import entities.Pessoa;
+import exceptions.RegraDeNegocioExcepetion;
+import service.PessoaService;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class AgendaTest01 {
 	
-	private static final PessoaService cadastro = new PessoaService();
+	private static final PessoaService pessoaService = new PessoaService();
 	
 	public static void main(String[] args) {
 		
@@ -46,7 +46,7 @@ public class AgendaTest01 {
 					JOptionPane.showMessageDialog(null, "Erro: Opção inválida.", "Erro", JOptionPane.ERROR_MESSAGE);
 					break;
 				}
-			}catch (RegraDeNegocioExecpetion e) {
+			}catch (RegraDeNegocioExcepetion e) {
 				JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro de entrada",
 						JOptionPane.ERROR_MESSAGE);
 			}
@@ -80,7 +80,7 @@ public class AgendaTest01 {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Erro: Digite apenas números inteiros para a opção.", "Erro de Entrada",
 					JOptionPane.ERROR_MESSAGE);
-			return -1;// retorna -1 pra cair no default do switch;
+			return -1;
 		}
 	}
 	
@@ -88,12 +88,12 @@ public class AgendaTest01 {
 	 * exibe todos os cadastros do sistema.
 	 */
 	private static void listarCadastros() {
-		if(cadastro.isVazia()) {
+		if(pessoaService.isVazia()) {
 			JOptionPane.showMessageDialog(null,"Erro: agenda vazia", "Erro", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
-		List<Pessoa> cadastros = cadastro.listaCadastros();
+		List<Pessoa> cadastros = pessoaService.listaCadastros();
 		
 		mostrarPorPagina(cadastros, 3);
 	}
@@ -113,7 +113,7 @@ public class AgendaTest01 {
 		try {
 			int idade = Integer.parseInt(idadeStr);
 			Pessoa pessoa = new Pessoa(nome, endereco, telefone, idade);
-			cadastro.cadastraPessoa(pessoa);
+			pessoaService.cadastraPessoa(pessoa);
 			JOptionPane.showMessageDialog(null, "Pessoa cadastrada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Erro: idade deve ser um número inteiro.", "Erro de Entrada",
@@ -136,7 +136,7 @@ public class AgendaTest01 {
 		int totalPaginas = (int)Math.ceil((double)totalPessoas / pessoasPorPagina);
 		
 		while(true) {
-			List<Pessoa> pagina = cadastro.getPagina(pessoas, paginaAtual + 1, pessoasPorPagina);
+			List<Pessoa> pagina = pessoaService.getPagina(pessoas, paginaAtual + 1, pessoasPorPagina);
 			
 			StringBuilder resultado = new StringBuilder();
 			for(Pessoa p : pagina) {
@@ -173,14 +173,14 @@ public class AgendaTest01 {
 	 */
 	private static void exibePessoasPorIdade() {
 
-		if (cadastro.isVazia()) {
+		if (pessoaService.isVazia()) {
 			JOptionPane.showMessageDialog(null, "Erro: agenda vazia", "Erro", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		String idadePesquisaStr = JOptionPane.showInputDialog(null, "Digite a idade para pesquisa: ");
 		try {
 			int idadePesquisa = Integer.parseInt(idadePesquisaStr);
-			List<Pessoa> encontrados = cadastro.pesquisaPorIdade(idadePesquisa);
+			List<Pessoa> encontrados = pessoaService.pesquisaPorIdade(idadePesquisa);
 			if (encontrados.isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Nenhuma pessoa encontrada com essa idade", "Informação",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -197,11 +197,11 @@ public class AgendaTest01 {
 	 * Exibe todos os cadastros do sistema ordenados alfabeticamente.
 	 */
 	private static void exibePessoasAlfabeticamente() {
-		if (cadastro.isVazia()) {
+		if (pessoaService.isVazia()) {
 			JOptionPane.showMessageDialog(null, "Erro: agenda vazia", "Erro", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		mostrarPorPagina (cadastro.cadastrosEmOrdemAlfabetica(), 3);
+		mostrarPorPagina (pessoaService.cadastrosEmOrdemAlfabetica(), 3);
 	}
 
 	
@@ -214,7 +214,7 @@ public class AgendaTest01 {
 	 */
 	private static void alteraCadastro() {
 
-		if (cadastro.isVazia()) {
+		if (pessoaService.isVazia()) {
 			JOptionPane.showMessageDialog(null, "Erro: agenda vazia", "Erro", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -222,7 +222,7 @@ public class AgendaTest01 {
 		String idBuscaStr = JOptionPane.showInputDialog(null, "Digite o ID para realizar busca: ");
 		try {
 			int idBusca = Integer.parseInt(idBuscaStr);
-			Pessoa pessoaAlterar = cadastro.buscaPorID(idBusca);
+			Pessoa pessoaAlterar = pessoaService.buscaPorID(idBusca);
 			
 			int confirmar = JOptionPane.showConfirmDialog(null,
 					"Pessoa encontrada. Deseja alterar cadastro?\n\n" + pessoaAlterar.toString(),
@@ -239,6 +239,8 @@ public class AgendaTest01 {
 			pessoaAlterar.setEndereco(JOptionPane.showInputDialog(null, "Digite o endereço: "));
 
 			pessoaAlterar.setTelefone(JOptionPane.showInputDialog(null, "Digite o telefone: "));
+			
+			pessoaService.alteraCadastros(pessoaAlterar);
 			JOptionPane.showMessageDialog(null, "Alteração bem sucedida.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Erro: ID deve ser um número inteiro positivo", "Erro de ID",
@@ -252,7 +254,7 @@ public class AgendaTest01 {
 	 * Passa as informações para outro método.
 	 */
 	private static void removePessoa() {
-		if (cadastro.isVazia()) {
+		if (pessoaService.isVazia()) {
 			JOptionPane.showMessageDialog(null, "Erro:  agenda vazia", "Erro", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -262,11 +264,9 @@ public class AgendaTest01 {
 
 		try {
 			int id = Integer.parseInt(idStr);
-			pessoaRemover = cadastro.buscaPorID(id);
+			pessoaRemover = pessoaService.buscaPorID(id);
 
-			String mensagem = "Deseja remover a seguinte pessoa?\n\n" + "ID: " + pessoaRemover.getId() + "\n" + "Nome: "
-					+ pessoaRemover.getNome() + "\n" + "Endereço: " + pessoaRemover.getEndereco() + "\n" + "Idade : "
-					+ pessoaRemover.getIdade();
+			String mensagem = "Deseja remover a seguinte pessoa?\n\n" + pessoaRemover.toString();
 
 			int confirmacao = JOptionPane.showConfirmDialog(null, mensagem, "Confirmação de remoção",
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -275,7 +275,7 @@ public class AgendaTest01 {
 				JOptionPane.showMessageDialog(null, "Operação cancelada.");
 				return;
 			}
-			cadastro.removerCadastro(id);
+			pessoaService.removerCadastro(id);
 			JOptionPane.showMessageDialog(null, "Pessoa removida com sucesso.", "Sucesso",
 					JOptionPane.INFORMATION_MESSAGE);
 		} catch (NumberFormatException e) {

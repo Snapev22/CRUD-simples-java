@@ -1,29 +1,29 @@
-package Service;
+package service;
 
+import java.nio.ReadOnlyBufferException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import Exceptions.RegraDeNegocioExecpetion;
 import entities.Pessoa;
+import exceptions.RegraDeNegocioExcepetion;
+import dao.PessoaDAO;
 
-
+/**
+ * A classe({@code PessoaService} fornece os serviços relacionados a manipulação de cadastros na agenda.
+ * Ela permite criar cadastro, listar, ordernar alfabeticamente, listar com filto de idade, e remoção de cadastro.
+ * <p> 
+ */
 public class PessoaService {
 	
-	/**
-	 * A classe({@code PessoaService} fornece os serviços relacionados a manipulação de cadastros na agenda.
-	 * Ela permite criar cadastro, listar, ordernar alfabeticamente, listar com filto de idade, e remoção de cadastro.
-	 * <p> 
-	 */
-	
-	private List<Pessoa> agenda = new ArrayList<Pessoa>();
-	
+	private PessoaDAO pessoaDAO;
+		
 	/**
 	 * Construtor padrão da classe PessoaService.
 	 * Inicializa a lista de cadastro de pessoas.
 	 */
 	public PessoaService() {
-		this.agenda = new ArrayList<Pessoa>();
+		this.pessoaDAO = new PessoaDAO();
 	}
 	
 	/**
@@ -32,15 +32,16 @@ public class PessoaService {
 	 * @param novaPessoa o objeto pessoa criado na classe principal
 	 */
 	public void cadastraPessoa(Pessoa novaPessoa) {
-		this.agenda.add(novaPessoa);
+		pessoaDAO.abrirCadastro(novaPessoa);
 	}
 	
 	public void removerCadastro(int id) {
-		Pessoa pessoaRemover = buscaPorID(id);
+		Pessoa pessoaRemover = pessoaDAO.buscaPorId(id);
 		if(pessoaRemover != null) {
-			agenda.remove(pessoaRemover);
+			pessoaDAO.removerPessoa(id);
+		}else {
+			throw new RegraDeNegocioExcepetion("Pessoa não encontrada com o ID: " + id);
 		}
-		
 	}
 	
 	/**
@@ -51,10 +52,12 @@ public class PessoaService {
 	 * @return uma lista não modificável de todas as pessoas da agenda. 
 	 */
 	public List<Pessoa> listaCadastros() {
-		return Collections.unmodifiableList(this.agenda);
+		return pessoaDAO.listarTodosCadastros();
 	}
+	
+	
 	public boolean isVazia() {
-		return agenda.isEmpty();
+		return pessoaDAO.isVazia();
 	}
 	
 	/**
@@ -65,13 +68,16 @@ public class PessoaService {
 	 * retorna uma lista vazia caso a agenda esteja vazia ou não encontre correspondências.
 	 */
 	public List<Pessoa> pesquisaPorIdade(int idade) {
-
-		List<Pessoa>pEncontradas = new ArrayList<Pessoa>();
 		
-		if (agenda.isEmpty()) {
+		if (pessoaDAO.isVazia()) {
 			return Collections.emptyList();
 		}
-		for (Pessoa pessoa : agenda) {
+		
+		List<Pessoa>todas = pessoaDAO.listarTodosCadastros();
+		List<Pessoa>pEncontradas = new ArrayList<Pessoa>();
+		
+	
+		for (Pessoa pessoa : todas) {
 			if (pessoa.getIdade() == idade) {
 				pEncontradas.add(pessoa);
 			}
@@ -88,7 +94,7 @@ public class PessoaService {
 	 * @return uma lista não modificavel de pessoas, ordenada por nome.
 	 */
 	public List<Pessoa> cadastrosEmOrdemAlfabetica() {
-		List<Pessoa> agendaOrdenada = new ArrayList<Pessoa>(this.agenda);
+		List<Pessoa> agendaOrdenada = new ArrayList<Pessoa>(pessoaDAO.listarTodosCadastros());
 		
 		Collections.sort(agendaOrdenada);
 		
@@ -103,18 +109,18 @@ public class PessoaService {
 	 */
 	public Pessoa buscaPorID(int id) {
 		
-		if(agenda.isEmpty()) {
-			return null;
-		}
-		for (Pessoa p : agenda) {
-			if (p.getId() == id) {
-				return p;
-			}
-		}
-		throw new RegraDeNegocioExecpetion("Erro: Pessoa não encontrada com o ID" + id);
+		Pessoa pessoa = pessoaDAO.buscaPorId(id);
+		if(pessoa == null) throw new RegraDeNegocioExcepetion("Erro: Pessoa não encontrada com o ID " + id);
+		
+		return pessoa;
 		
 	}
 	
+	public void alteraCadastros(Pessoa pessoaAlterar) {
+		if(pessoaAlterar == null)throw new RegraDeNegocioExcepetion("Erro: pessoa não pode ser nula");
+		
+		pessoaDAO.alteraPessoa(pessoaAlterar);
+	}
 	/**
 	 * Retorna uma sublista (página) de pessoas a partir de uma lista completa.
 	 * * @param pessoas  A lista completa de pessoas a ser paginada.
