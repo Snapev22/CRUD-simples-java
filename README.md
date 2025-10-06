@@ -1,11 +1,11 @@
 # 📚 Agenda CRUD em Java com Persistência MySQL
 
-Projeto desenvolvido em **Java** para criar uma aplicação de agenda com gerenciamento completo de cadastros CRUD . É um demonstrativo prático da comunicação entre a aplicação e o banco de dados.
+Este é um sistema de **Agenda CRUD** construído em **Java**, que utiliza a **API JDBC** para persistência de dados em um banco de dados **MySQL**. É um demonstrativo prático da comunicação entre a aplicação e o banco de dados.
 
 ### 💡 O que este projeto demonstra:
 
 * **Persistência de Dados:** Uso de **JDBC** para realizar operações CRUD diretamente no banco de dados **MySQL**.
-* **Boas Práticas:** Implementação de um padrão em camadas (Service e DAO) para separar a lógica de negócio do acesso a dados.
+* **Boas Práticas:** Implementação de um **padrão em camadas** (Service e DAO) para separar a lógica de negócio do acesso a dados.
 * **Tratamento de Erros:** Validação de regras de negócio (`RegraDeNegocioExcepetion`) para garantir a integridade dos dados.
 * **Funcionalidades:** Cadastro, busca, alteração, remoção e filtros por idade e ordenação alfabética.
 
@@ -15,6 +15,19 @@ Projeto desenvolvido em **Java** para criar uma aplicação de agenda com gerenc
 * **Banco de Dados:** MySQL
 * **Conexão:** JDBC
 * **Extra:** Configuração para **HikariCP** (Pool de Conexões).
+
+### 🔩 Estrutura do Banco de Dados (Tabela `pessoas`)
+
+Para rodar o projeto, utilize a seguinte estrutura básica para a tabela `pessoas` no seu MySQL:
+
+```sql
+CREATE TABLE pessoas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    endereco VARCHAR(255),
+    telefone VARCHAR(20),
+    idade INT NOT NULL
+);
 
 ### 🚀 Como Rodar
 
