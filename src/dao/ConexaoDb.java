@@ -24,7 +24,7 @@ public class ConexaoDb {
 	 */
 	public Connection recuperaConexao() {
 		try {
-			String password = "****";
+			String password = "***";
 			String user = "root";
 			String database = "agenda_db";
 
@@ -46,7 +46,7 @@ public class ConexaoDb {
 		HikariConfig config = new HikariConfig();
 		config.setJdbcUrl("jdbc:mysql://localhost:3306/agenda_db");
 		config.setUsername("root");
-		config.setPassword("Sn@pev22");
+		config.setPassword("***");
 		config.setMaximumPoolSize(10);
 		
 		return new HikariDataSource(config);
